@@ -1,0 +1,243 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_017190LLPOELG6ZXaxyNIa7eA1utF6u1wGr",
+    "name": "NEXTG-12265",
+    "title": "NEXTG-12265",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.integer",
+        "properties": {
+          "value": 0,
+          "scope": "input",
+          "name": "Count",
+          "type": "datatype.integer",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_017191PO5YP302kK6PXNuPD9Y3U4Dz4l9Oq",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.date",
+        "properties": {
+          "value": "0001-01-01T00:00:00+00:00",
+          "scope": "local",
+          "name": "DT",
+          "type": "datatype.date",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_0171YJCSMJ8HW5YnTXaQFbSgUCxMVIpP1l2",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "NEXTG-12265",
+      "favorite": false,
+      "target": {
+        "execute_on_target_group": true,
+        "target_group": {
+          "target_group_id": "target_group_0172YNRI6R7IK4ZBGDeqTT3qJlCoohLe6bw",
+          "run_on_all_targets": false,
+          "selected_target_types": [
+            "corejava.jdbc_endpoint"
+          ],
+          "use_criteria": {
+            "choose_target_using_algorithm": "choose_all_with_matching_criteria",
+            "conditions": [
+              {
+                "operator": "eqi",
+                "left_operand": "$targetgroup.corejava jdbc_endpoint.input.dbtype$",
+                "right_operand": "Oracle"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01720F367TIHK11ldeiBW6eAMZlotNg6Md4",
+        "name": "Select from Table via JDBC",
+        "title": "Select from Table via JDBC",
+        "type": "corejava.select_from_via_jdbc",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Select from Table via JDBC",
+          "persist_output": false,
+          "populate_columns": true,
+          "row_count": 200,
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "sql_query": "select book, author, price from bookstore",
+          "target": {
+            "use_workflow_target_group": true
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01722QSQSJWHC1bJhkcfdvfFqe9BP2XYYLY",
+        "name": "Condition Block",
+        "title": "Condition Block",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Condition Block"
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01722QSSRJPNW31ZaJ8yDafWtVMxmym75pH",
+            "name": "Condition Branch",
+            "title": "Condition Branch (Passed)",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01720F367TIHK11ldeiBW6eAMZlotNg6Md4.output.response_body$",
+                "operator": "mw",
+                "right_operand": "*code:400 message::Invalid column name  'fakename'.* "
+              },
+              "continue_on_failure": false,
+              "display_name": "Condition Branch (Passed)"
+            },
+            "object_type": "definition_activity"
+          },
+          {
+            "unique_name": "definition_activity_01722QSTIJVW02d0mtXNyVLmO9ANCw8VwhW",
+            "name": "Condition Branch",
+            "title": "Condition Branch (Failed)",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_017190LLPOELG6ZXaxyNIa7eA1utF6u1wGr.input.variable_workflow_017191PO5YP302kK6PXNuPD9Y3U4Dz4l9Oq$",
+                "operator": "lt",
+                "right_operand": 5
+              },
+              "continue_on_failure": false,
+              "display_name": "Condition Branch (Failed)"
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01722QV58WAH446J3PhQds7RhN5DNIEzagu",
+                "name": "Completed",
+                "title": "Completed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "succeeded",
+                  "display_name": "Completed"
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "targets": {
+    "definition_target_01722M7SZT6C46ESYOEggQHa1kP9A2DmQ7D": {
+      "unique_name": "definition_target_01722M7SZT6C46ESYOEggQHa1kP9A2DmQ7D",
+      "name": "Oracle",
+      "title": "Oracle",
+      "type": "corejava.jdbc_endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "database": "orcl.tidalsoft.local",
+        "dbtype": "oracle",
+        "default_runtime_user_id": "definition_runtime_user_01722M4M9BVHC3ekp1Kfiqqj29K7BEkYUd7",
+        "display_name": "Oracle",
+        "port": 1521,
+        "server": "10.88.38.116"
+      }
+    },
+    "definition_target_0172YMZOPZM3K2iIbdDCtPshbNTo4QvIRtl": {
+      "unique_name": "definition_target_0172YMZOPZM3K2iIbdDCtPshbNTo4QvIRtl",
+      "name": "Meraki",
+      "title": "Meraki",
+      "type": "meraki.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "default_runtime_user_id": "definition_runtime_user_0172YMGEEF4JC41OzpNHd9j2jd9g68ValSS",
+        "display_name": "Meraki",
+        "host": "n1.meraki.com",
+        "protocol": "https"
+      }
+    }
+  },
+  "runtime_users": {
+    "definition_runtime_user_01722M4M9BVHC3ekp1Kfiqqj29K7BEkYUd7": {
+      "unique_name": "definition_runtime_user_01722M4M9BVHC3ekp1Kfiqqj29K7BEkYUd7",
+      "name": "oracle1",
+      "title": "oracle1",
+      "type": "runtime_user.database_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "display_name": "oracle1",
+        "password": "*****",
+        "username": "*****"
+      }
+    },
+    "definition_runtime_user_0172YMGEEF4JC41OzpNHd9j2jd9g68ValSS": {
+      "unique_name": "definition_runtime_user_0172YMGEEF4JC41OzpNHd9j2jd9g68ValSS",
+      "name": "Meraki",
+      "title": "Meraki",
+      "type": "runtime_user.meraki_credentials",
+      "base_type": "runtime_user",
+      "object_type": "definition_runtime_user",
+      "properties": {
+        "api_key": "*****",
+        "display_name": "Meraki"
+      }
+    }
+  },
+  "target_groups": {
+    "target_group_0172YNRI6R7IK4ZBGDeqTT3qJlCoohLe6bw": {
+      "unique_name": "target_group_0172YNRI6R7IK4ZBGDeqTT3qJlCoohLe6bw",
+      "name": "Group1",
+      "title": "Group1",
+      "type": "generic.target_group",
+      "base_type": "target_group",
+      "version": "1.0.0",
+      "targets": [
+        {
+          "data_target_type": "corejava.jdbc_endpoint",
+          "view_target_type": "corejava.jdbc_endpoint",
+          "include_all_targets": false,
+          "selected_target_ids": [
+            "definition_target_01722M7SZT6C46ESYOEggQHa1kP9A2DmQ7D"
+          ]
+        },
+        {
+          "data_target_type": "meraki.endpoint",
+          "view_target_type": "meraki.endpoint",
+          "include_all_targets": false,
+          "selected_target_ids": [
+            "definition_target_0172YMZOPZM3K2iIbdDCtPshbNTo4QvIRtl"
+          ]
+        }
+      ],
+      "object_type": "target_group"
+    }
+  }
+}
