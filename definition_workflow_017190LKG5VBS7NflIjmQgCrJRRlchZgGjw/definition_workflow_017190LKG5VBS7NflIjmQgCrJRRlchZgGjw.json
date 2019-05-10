@@ -1,6 +1,6 @@
 {
   "workflow": {
-    "unique_name": "definition_workflow_017190LLPOELG6ZXaxyNIa7eA1utF6u1wGr",
+    "unique_name": "definition_workflow_0172ZY73NHGSW6hkfljT2bmISjlUeh7dvzK",
     "name": "NEXTG-12265",
     "title": "NEXTG-12265",
     "type": "generic.workflow",
@@ -15,7 +15,7 @@
           "type": "datatype.integer",
           "is_required": false
         },
-        "unique_name": "variable_workflow_017191PO5YP302kK6PXNuPD9Y3U4Dz4l9Oq",
+        "unique_name": "variable_workflow_0172ZY7JHT80G6KeAlj7nBBU2u2Q2VDQ5uN",
         "object_type": "variable_workflow"
       },
       {
@@ -27,7 +27,7 @@
           "type": "datatype.date",
           "is_required": false
         },
-        "unique_name": "variable_workflow_0171YJCSMJ8HW5YnTXaQFbSgUCxMVIpP1l2",
+        "unique_name": "variable_workflow_0172ZY7JHTB0S2dbgviKNX4CIJmYINACa9S",
         "object_type": "variable_workflow"
       }
     ],
@@ -44,7 +44,8 @@
           "target_group_id": "target_group_0172YNRI6R7IK4ZBGDeqTT3qJlCoohLe6bw",
           "run_on_all_targets": false,
           "selected_target_types": [
-            "corejava.jdbc_endpoint"
+            "corejava.jdbc_endpoint",
+            "meraki.endpoint"
           ],
           "use_criteria": {
             "choose_target_using_algorithm": "choose_all_with_matching_criteria",
@@ -53,6 +54,16 @@
                 "operator": "eqi",
                 "left_operand": "$targetgroup.corejava jdbc_endpoint.input.dbtype$",
                 "right_operand": "Oracle"
+              },
+              {
+                "operator": "gt",
+                "left_operand": "$targetgroup.meraki endpoint.input.port$",
+                "right_operand": "$workflow.definition_workflow_0172ZY73NHGSW6hkfljT2bmISjlUeh7dvzK.input.variable_workflow_0172ZY7JHT80G6KeAlj7nBBU2u2Q2VDQ5uN$"
+              },
+              {
+                "operator": "ne",
+                "left_operand": "$targetgroup.meraki endpoint.input.protocol$",
+                "right_operand": "http"
               }
             ]
           }
@@ -62,7 +73,7 @@
     "object_type": "definition_workflow",
     "actions": [
       {
-        "unique_name": "definition_activity_01720F367TIHK11ldeiBW6eAMZlotNg6Md4",
+        "unique_name": "definition_activity_0172ZY7XLB1WG5Imixul5JqdK4vfpl1ynAP",
         "name": "Select from Table via JDBC",
         "title": "Select from Table via JDBC",
         "type": "corejava.select_from_via_jdbc",
@@ -86,7 +97,7 @@
         "object_type": "definition_activity"
       },
       {
-        "unique_name": "definition_activity_01722QSQSJWHC1bJhkcfdvfFqe9BP2XYYLY",
+        "unique_name": "definition_activity_0172ZY82H0XB00JMPpvHfZJ4ORPeKsmPUvj",
         "name": "Condition Block",
         "title": "Condition Block",
         "type": "logic.if_else",
@@ -98,14 +109,14 @@
         "object_type": "definition_activity",
         "blocks": [
           {
-            "unique_name": "definition_activity_01722QSSRJPNW31ZaJ8yDafWtVMxmym75pH",
+            "unique_name": "definition_activity_0172ZY8724AKK6FLMXNI3lkNvCBrYAL5vue",
             "name": "Condition Branch",
             "title": "Condition Branch (Passed)",
             "type": "logic.condition_block",
             "base_type": "activity",
             "properties": {
               "condition": {
-                "left_operand": "$activity.definition_activity_01720F367TIHK11ldeiBW6eAMZlotNg6Md4.output.response_body$",
+                "left_operand": "$activity.definition_activity_0172ZY7XLB1WG5Imixul5JqdK4vfpl1ynAP.output.response_body$",
                 "operator": "mw",
                 "right_operand": "*code:400 message::Invalid column name  'fakename'.* "
               },
@@ -115,14 +126,14 @@
             "object_type": "definition_activity"
           },
           {
-            "unique_name": "definition_activity_01722QSTIJVW02d0mtXNyVLmO9ANCw8VwhW",
+            "unique_name": "definition_activity_0172ZY8CDKEMC2lHZwxy6i96gU192gZB76J",
             "name": "Condition Branch",
             "title": "Condition Branch (Failed)",
             "type": "logic.condition_block",
             "base_type": "activity",
             "properties": {
               "condition": {
-                "left_operand": "$workflow.definition_workflow_017190LLPOELG6ZXaxyNIa7eA1utF6u1wGr.input.variable_workflow_017191PO5YP302kK6PXNuPD9Y3U4Dz4l9Oq$",
+                "left_operand": "$workflow.definition_workflow_0172ZY73NHGSW6hkfljT2bmISjlUeh7dvzK.input.variable_workflow_0172ZY7JHT80G6KeAlj7nBBU2u2Q2VDQ5uN$",
                 "operator": "lt",
                 "right_operand": 5
               },
@@ -132,7 +143,7 @@
             "object_type": "definition_activity",
             "actions": [
               {
-                "unique_name": "definition_activity_01722QV58WAH446J3PhQds7RhN5DNIEzagu",
+                "unique_name": "definition_activity_0172ZY8FXN7NW0qSkeUc4nQiNbWUKDu45rU",
                 "name": "Completed",
                 "title": "Completed",
                 "type": "logic.completed",
